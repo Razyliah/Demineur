@@ -1,9 +1,11 @@
 x=0
 y=0
-tableau = 10*[0]
-for i in range(len(tableau)):
+tableau=[]
+list = 5*[0]
+for i in range(5):
+  tableau.append(list)
 
-  print(tableau)
+print(tableau)
 
 
 
