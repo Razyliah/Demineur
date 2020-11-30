@@ -1,42 +1,96 @@
 "Robin Boulet"
 import random
 
-tableau = [ [0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0] ]
+gameOver = False
 
-i = 0
+bombe = False
 
-#Random bombs placement
-while i <8:
-  ligne= random.randint(0,4)
-  colonne= random.randint(0,4)
-  if (tableau[ligne][colonne] != "b"):
-    tableau[ligne][colonne] = "b"
-    i += 1
+plateau = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
 
-#Array print
-print("0 1 2 3 4 5")
-for i in range(0,5):
-  print(i, end=" ")
-  for y in range(0,5):
+affichagePlateau = [[".",".",".",".",".","."],[".",".",".",".",".","."],[".",".",".",".",".","."],[".",".",".",".",".","."],[".",".",".",".",".","."],[".",".",".",".",".","."]]
 
-    
-    
-    print(tableau[i][y], end=" ")
-  print("")
+def affichage(affichagePlateau):
+
+  print("  0 1 2 3 4 5")
+  print("  _ _ _ _ _ _ ")
+  for ligne in range(0,6):
+    print(ligne, end="|")
+    for colonne in range(0,6):
+      print(affichagePlateau[ligne][colonne], end=" ")
+    print("")
 
 
-print('Choisir case colonne :', end=" ")
-x = int(input())
+while bombe == False:
 
-print('Choisir case ligne :', end=" ")
-y = int(input())
+    for i in range(len(plateau)):
+        
+        for j in range(len(plateau[i])):
 
-print(tableau[x][y])
+            plateau[i][j] = random.randint(1,5)
+            if(plateau[i][j] == 5):
+                plateau[i][j] = "B"
+                bombe = True
+            else:
+                plateau[i][j] = 0
 
 
+while gameOver == False:
+
+    affichage(affichagePlateau)
+    ligne = int(input("ligne (0-5) : "))
+    colonne = int(input("colonne (0-5) : "))
+
+    if(colonne in range(len(plateau)) and ligne in range(len(plateau))):
+
+      if(plateau[ligne][colonne] == "B"):
+          gameOver = True
+          
+          print("Perdu !")
+          print("-")
+          affichage(plateau)
+          print("-")
+
+      sideBomb = 0
+      
+      if(colonne != 2):
+          if(plateau[ligne][colonne] == "B"):
+              sideBomb=sideBomb+1
+              
+      if(colonne != 0):
+          if(plateau[ligne][colonne-1] == "B"):
+              sideBomb=sideBomb+1
+              
+
+      if(ligne != 0):
+          if(plateau[ligne-1][colonne] == "B"):
+              sideBomb=sideBomb+1
+          
+          if(colonne != 0):
+              if(plateau[ligne-1][colonne-1] == "B"):
+                  sideBomb=sideBomb+1
+              
+          if(colonne != 2):
+              if(plateau[ligne-1][colonne] == "B"):
+                  sideBomb=sideBomb+1
+
+      if(ligne !=2):
+          if(plateau[ligne][colonne] == "B"):
+              sideBomb=sideBomb+1
+
+          if(colonne != 0):
+              if(plateau[ligne][colonne-1] == "B"):
+                  sideBomb=sideBomb+1
+
+          if(colonne != 2):
+            if(plateau[ligne][colonne] == "B"):
+                  sideBomb=sideBomb+1
 
 
-"""for i in range(-1,1):
-    for y in range(-1,1):
-      if(tableau[ligne+i][colonne+y] != "b" and ligne+i>=0 and ligne+i <5 and colonne+y >=0 and colonne+y <5):
-        tableau[ligne+i][colonne+y] +=1"""
+      affichagePlateau[ligne][colonne] =sideBomb
+
+
+      """
+      print("-")
+      affichage(plateau)
+      print("-")
+      """
